@@ -1,0 +1,6 @@
+node_modules
+dist
+.git
+.gitignore
+notifications/node_modules
+notifications/dist

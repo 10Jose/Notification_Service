@@ -1,0 +1,49 @@
+services:
+  api:
+    build:
+      context: ./notifications
+      dockerfile: Dockerfile
+    container_name: nestjs-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - TZ=America/Bogota
+      - DATABASE_HOST=mongo
+      - DATABASE_PORT=27017
+      - DATABASE_USER=admin
+      - DATABASE_PASSWORD=secret
+      - DATABASE_NAME=myapp
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:7
+    container_name: mongo-db
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_DATABASE=myapp
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+volumes:
+  mongodata:
+
+networks:
+  app-network:
+    driver: bridge
