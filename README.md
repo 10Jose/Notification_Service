@@ -15,4 +15,7 @@ Para probar el microservicio, por favro abarn si docker desktop, luego en la una
     "mensaje": "asjdjajasdsad",
     "fecha_creacion": "2026-09-22",
     "estado": "realizado"
+
 }
+
+Las dependecias que usa el servicio podrán ser encontradas en el archivo package.json de /notifications/package.json
